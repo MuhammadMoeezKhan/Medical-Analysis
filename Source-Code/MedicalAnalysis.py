@@ -51,9 +51,11 @@ def readSickData(numRows = None):
     df = df.loc[:, 'age':'referral source']
     return df
 
+
 # Of course, all of these problems should be solved completely programmatically.
 # Don't hardcode anything. That is, don't figure out part or all of the 
 # answer by-hand and just type it in.
+
 
 def sectionA(first):
     print("\n=================================================================")
@@ -153,58 +155,68 @@ def sectionC(sickDF):
     # Some of these may require multiple lines of code.
     # Declare additional local variables as you see fit.
     
+    
     print("\nC1 -----------------------------------------------------------------")
-    # What is the average age of a patient in this dataset?
-    avgAge = None
+    # What is the average age of a paticleent in this dataset?
+    
+    
+    avgAge = sickDF.loc[ : , "age"].mean()
     print("Average age:", avgAge)
+    
     
     print("\nC2 -----------------------------------------------------------------")
     # What is the most common sex in this dataset?
-    commonSex = None
+    commonSex = sickDF.loc[ : , "sex"].mode().iloc[0]
     print("Common sex:", commonSex)
+    
     
     print("\nC3 -----------------------------------------------------------------")
     # Show the age of the oldest patient in the dataset.
-    oldest = None
+    oldest = sickDF.loc[ : , "age"].max()
     print("Oldest age:", oldest)
     # The oldest patient is listed as 455, which is clearly a mistake. We'll fix it soon.
     
+    
     print("\nC4 -----------------------------------------------------------------")
     # Show the indices and ages of the 3 oldest patients in the dataset.
-    oldest3Ages = None
+    oldest3Ages = sickDF.loc[ : , "age"].nlargest(3)
     print("Oldest 3 IDs and ages:\n", oldest3Ages, sep="")
+   
     
     print("\nC5 -----------------------------------------------------------------")
     # Show *all data* for the 3 oldest patients in the dataset.
-    oldest3 = None
+    oldest3 = sickDF.loc[oldest3Ages.index]
     print("Oldest 3 all data:\n", oldest3, sep="")
+    
     
     print("\nC6 -----------------------------------------------------------------")
     # Show all patients with age less than 20
-    ageUnder20 = None
+    ageUnder20 = sickDF.loc[sickDF.loc[ : , "age"] < 20]
     print("Patients under age 20:\n", ageUnder20, sep="")
     
     
-    
+    #C COMPLETED
+ 
     
 def hw03():
     # Ensure that enough columns print when we print a dataframe
     pd.set_option('display.max_columns', 20)
     
     sickDF = readSickData()
-    #print("The first 5 rows of the dataset:\n", sickDF.head(5), sep='')
+    print("The first 5 rows of the dataset:\n", sickDF.head(5), sep='')
     
     first = sickDF.loc[0, :]
-    #print("Series object corresponding to the first patient:\n", first, sep='')
+    print("Series object corresponding to the first patient:\n", first, sep='')
     
     sectionA(first)
     sectionB(sickDF)
     sectionC(sickDF)
     
+    
     # We'll keep section D (below) in the hw03 function, because
     # we're mutating sickDF in the problems below. (Otherwise we'll get a warning message
     # about the mutation not taking effect in the way we might intend.)
-    """
+    
     print("\n=================================================================")
     print("=================================================================")
     print("=================================================================")
@@ -217,48 +229,66 @@ def hw03():
     print("\nD1 -----------------------------------------------------------------")
     # Change sickDF so that any patient with age over 120 is dropped (erroneous data).
     # Then print the oldest age again to show that it has been updated.
-    oldest = None
+    newSeries = sickDF.loc[:, "age"] 
+    sickDF.loc[: , "age"] = newSeries.loc[newSeries < 120]
+    oldest = sickDF.loc[: ,"age"].max()
     print("Oldest age after dropping erroneous row:", oldest)
+    
     
     print("\nD2 -----------------------------------------------------------------")
     # Show the average age of women in the dataset.
 	# Note: Your answer here depends on doing D1 correctly first, since D1 changes sickDF!
-    avgFemaleAge = None
+    femaleDF = sickDF.loc[ (sickDF.loc[: , "sex"] == 'F')]
+    avgFemaleAge = femaleDF.loc[:, "age"].mean()
     print("Average female age:", avgFemaleAge)
+    
     
     print("\nD3 -----------------------------------------------------------------")
     # Show the standard deviation of TT4 scores for women 50 and older.
-    stdTT4FemaleOver50 = None
+    femalesOver50 = femaleDF.loc[ femaleDF.loc[:, "age"] >= 50 ]
+    stdTT4FemaleOver50 = femalesOver50.loc[:, "TT4"].std()
     print("Standard deviation of TT4 scores for women 50 and older:", stdTT4FemaleOver50)
+    
     
     print("\nD4 -----------------------------------------------------------------")
     # Show the number of people that are either on antithyroid medication, 
     # or have had thyroid surgery, or both.
-    countAntiOrSurg = None
+    selectDF = sickDF.loc[ (sickDF.loc[: , "on antithyroid medication"] == 't') | 
+                           (sickDF.loc[: , "thyroid surgery"] == 't') ]
+    countAntiOrSurg = selectDF.loc[: ,  "age"].count()
     print("Number of people on antithyroid med, or with thyroid surgery:", countAntiOrSurg)
+    
     
     print("\nD5 -----------------------------------------------------------------")
     # Add a new column to sickDF labeled "measurement sum" that is
     # the sum of the following measurements:
     # TSH, T3, TT4, T4U, FTI, TBG
     # Treat any missing values as 0 in the sum.
-    None
+    copySickDF = sickDF.loc[: , :].fillna(0)
+    combinedSeries = copySickDF.loc[: , "TSH"] + copySickDF.loc[: , "T3"] + copySickDF.loc[: , "TT4"] + copySickDF.loc[: , "T4U"] + copySickDF.loc[: , "FTI"] + copySickDF.loc[: , "TBG"]      
+    sickDF.loc[: , "measurement sum"] = combinedSeries.map(lambda value : 0 if(np.isnan(value)) else value)
     print("First 5 rows of sickDF after 'measurement sum' column added:\n", sickDF.head(5), sep='')
+    
     
     print("\nD6 -----------------------------------------------------------------")
     # Fill in the missing values of the FTI column with whichever is greater: the TT4 value, or 110.
     # You may also find this useful:
     # https://datascience.stackexchange.com/questions/17769/how-to-fill-missing-value-based-on-other-columns-in-pandas-dataframe
-    None
+    sickDF.loc[: , "FTI"] = sickDF.apply(lambda row : max(row.loc["TT4"], 110) if(np.isnan(row.loc["FTI"])) else row.loc["FTI"], axis = 1)
     print("First 5 rows of sickDF after FTI missing values filled in:\n", sickDF.head(5), sep='')
+
 
     print("\nD7 -----------------------------------------------------------------")
     # Replace the column named TT4 with a column called TT4Cat.
     # Any TT4 value < 100 should be marked 'low' in TT4Cat.
     # Any TT4 value >= 100 and <= 120 should be marked 'medium' in TT4Cat.
     # Any TT4 value >120 should be marked 'high' in TT4Cat.
-    None
+    # rename method --> df.rename(columns = {'team':'team_name', 'points':'points_scored'}, inplace = True)
+    newSeries = sickDF.loc[: , "TT4"].map(lambda TT4value : "low" if(TT4value < 100) else ( "medium" if(TT4value >= 100 and TT4value <= 120)  else "high" ))
+    sickDF.loc[: , "TT4"] = newSeries
+    sickDF.rename( columns = {'TT4':'TT4Cat'}, inplace = True )
     print("First 5 rows of sickDF after replacing TT4 with TT4Cat:\n", sickDF.head(5), sep='')
+
 
     print("\nD8 -----------------------------------------------------------------")
     # Determine whether there is any patient in the dataset that:
@@ -268,19 +298,22 @@ def hw03():
     # Has not had thyroid surgery
     # Doctors did query whether or not she had hypothyroidism
     # If there are any patients who meet the above conditions, list their IDs (row labels).
-    areThereAny = None
+    checkingSeries = (sickDF.loc[:, "sex"] == 'F') & ((sickDF.loc[: , "age"] >= 30) & (sickDF.loc[: , "age"] < 40)) & (sickDF.loc[: , "pregnant"] == "t") & (sickDF.loc[: , "thyroid surgery"] == "f") & (sickDF.loc[: , "query hypothyroid"] == "t")
+    areThereAny = checkingSeries.any()
     print("Are there any such women:", areThereAny)
-    whoAreThey = None
+    
+    whoAreThey = sickDF.loc[checkingSeries].index
     print("The following women meet those criteria:\n", whoAreThey)
+    
     
     print("\nD9 -----------------------------------------------------------------")
     # The attribute "on thyroxine" is really bool, although its type is currently interpreted as a string (either "t" or "f").
     # Convert that column's type to the bool type.
     # (We could do this for many attributes, of course, but we'll stick with just that one for now.)
-    None
+    convertSeries = sickDF.loc[: , "on thyroxine"]
+    sickDF.loc[: , "on thyroxine"] = convertSeries.map(lambda boolVal : True if(boolVal == "t") else False)
     print("First 5 rows of sickDF after converting 'on thyroxine' to bool:\n", sickDF.head(5), sep='')
-    
 
-    """
+    #D COMPLETED
     
 hw03()
