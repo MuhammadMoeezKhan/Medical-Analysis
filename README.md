@@ -1,7 +1,6 @@
 # Medical-Analysis
 
-#### I programmed a Python project to demonstrate the use of the Pandas Python library (Series, DataFrames, Overloaded, Higher-Order functions), and Nimpy to analyze existing medical data!
-<br>
+#### I programmed a Python project to demonstrate the use of the Pandas Python library (Series, DataFrames, Overloaded, Higher-Order functions), and Numpy to analyze existing medical data!
 
 #### Program utilizes:
 - Creating Serie/Data Frame objects
@@ -10,7 +9,7 @@
   - s.map()
   - df.apply()
   - lambda functions
-  - df filterations
+  - dataframe filterations
 - Series and DataFrame conversions
 - Using Overloaded functions and boolean operators
 - Series and DataFrame Data Structure Slicing/Selection
@@ -18,8 +17,6 @@
 - Headers: data file --> row numbers
 - Name: array --> data file --> column names
 - Row Number Count: number of lines to read in the data file
- 
- <br>
 
 #### Program functionalities:
 - Accessing, Altering, Manipulating, Filtering, and Searching Serie/Data Frame contents
