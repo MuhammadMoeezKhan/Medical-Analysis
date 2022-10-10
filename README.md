@@ -2,7 +2,7 @@
 
 #### I programmed a Python project to demonstrate the use of the Pandas Python library (Series, DataFrames, Overloaded, Higher-Order functions), and Numpy to analyze existing medical data!
 
-#### Program utilizes:
+#### Program Utilizes:
 - Creating Serie/Data Frame objects
 - Using High-Order and Built-In Pandas functions:
   - s.max(), s.std(), s.count(), and many more
@@ -18,7 +18,7 @@
 - Name: array --> data file --> column names
 - Row Number Count: number of lines to read in the data file
 
-#### Program functionalities:
+#### Program Functionalities:
 - Accessing, Altering, Manipulating, Filtering, and Searching Serie/Data Frame contents
 - Using filtration techniques to find patients according to search queries
 - Standardizes the entire data collection use of data statistical values
