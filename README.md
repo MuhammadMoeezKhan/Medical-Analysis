@@ -9,7 +9,7 @@
   - s.map()
   - df.apply()
   - lambda functions
-  - dataframe filterations
+  - dataframe filtrations
 - Series and DataFrame conversions
 - Using Overloaded functions and boolean operators
 - Series and DataFrame Data Structure Slicing/Selection
